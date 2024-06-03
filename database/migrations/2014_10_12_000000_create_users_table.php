@@ -17,9 +17,16 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->rememberToken();
+            $table->rememberToken()->nullable();
             $table->timestamps();
         });
+
+
+        DB::table('users')->insert([
+            'name' => 'Caones, Alexander P',
+            'email' => 'occ.caones.alexander@gmail.com',
+            'password' => Hash::make('alex0303')
+        ]);
     }
 
     /**
