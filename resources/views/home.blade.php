@@ -10,6 +10,46 @@
 <body id="page-top">
 
     <!-- Page Wrapper -->
+    <div class="modal fade" id="addEntryModal" tabindex="-1">
+        <div class="modal-dialog" >
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height: 500px;">
+
+            <div class="form-group">
+                @csrf
+                <label for="customerName">Customer</label>
+                <input type="text" class="form-control" id="customerName" placeholder="Enter Customer Name">
+
+                <label for="driverName">Driver Name</label>
+                <input type="text" class="form-control" id="driverName" placeholder="Enter Driver Name">
+
+                <label for="weigher">Weigher</label>
+                <input type="text" class="form-control" id="weigher" placeholder="Enter Driver Name">
+
+                <label for="gross">Gross</label>
+                <input type="number" class="form-control" id="gross" placeholder="Total Gross">
+
+                <label for="plateNumber">Place Number</label>
+                <input type="text" class="form-control" id="plateNumber" placeholder="Enter Plate Number">
+
+                <label for="plateNumber">Weigh In</label>
+                <input type="number" class="form-control" id="weighIn" placeholder="Enter Weigh In">
+            </div>
+               
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeModal">Close</button>
+                <button type="button" class="btn btn-primary" id="submitBtn">SUBMIT</button>
+            </div>
+            </div>
+        </div>
+    </div>
 
     <div id="wrapper">
         @include('sidebar')
@@ -76,7 +116,7 @@
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                        <a href="#" id="addEntry" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                     </div>
 
@@ -202,5 +242,49 @@
 
 </body>
 @include('ft_scripts')
+
+
+<script>
+
+    $(document).ready(function() {
+        $('#addEntry').off('click').on('click', function() {
+            $('#addEntryModal').modal('show');
+
+          
+            $('#closeModal').click(function() {
+                $('#addEntryModal').modal('hide');
+            })
+        })
+
+
+
+        $('#submitBtn').off('click').on('click', function() {
+            $('#addEntryModal').modal('hide');
+            $.ajax({
+                type: "POST",
+                url: "{{ route('postTransact') }}",
+                data : {
+                    _token: "{{ csrf_token() }}",
+                    customer : $('#customerName').val(),
+                    driver : $('#driverName').val(),
+                    weigher : $('#weigher').val(),
+                    gross : $('#gross').val(),
+                    plate_number : $('#plateNumber').val(),
+                    weigh_in : $('#weighIn').val(),
+                    transaction_id : 0,
+                    driver_id : 0,
+                    customer_id : 0,
+                },
+                success : function (response) {
+                    console.log(response);
+                },
+                error : function(error) {
+                    console.log(error);
+                }
+            });
+        });
+    })
+
+</script>
 
 </html>

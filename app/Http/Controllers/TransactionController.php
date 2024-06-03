@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Users;
+use App\Models\User;
 use Auth;
 use DB;
 
@@ -14,7 +14,7 @@ class TransactionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         if ($request->ajax()) {
             $data = DB::select('select * from transactions');
@@ -33,34 +33,34 @@ class TransactionController extends Controller
             'plate_number'=>'required',
             'weigh_in'=>'required',
         ]);
-
+    
         if($validator->fails())
         {
-            return $validator->messages();
+            return response()->json(['error' => $validator->errors()], 422);
         }
         else
         {
             $customer = $request->customer;
             $driver = $request->driver;
             $weigher = $request->weigher; 
-
+    
             $save_customer = User::updateOrCreate(
                 ['id' => $request->customer_id],
-                ['name' => $customer, 'role'=>1], 
+                ['name' => $customer, 'role'=>1]
             );
             $save_driver = User::updateOrCreate(
                 ['id' => $request->driver_id],
-                ['name' => $driver, 'role'=>2], 
+                ['name' => $driver, 'role'=>2]
             );
             $save_weigher = User::updateOrCreate(
                 ['id' => $request->weigher_id],
-                ['name' => $weigher, 'role'=>3], 
+                ['name' => $weigher, 'role'=>3]
             );
            
-            Transaction::updateOrCreate([
-                ['id'=>$transaction_id],
+            Transaction::updateOrCreate(
+                ['id'=>$request->transaction_id],
                 [
-                    'user_id'=> auth()->id,
+                    'user_id'=> auth()->id(),
                     'customer'=> $save_customer->id,
                     'driver'=> $save_driver->id,
                     'weigher'=> $save_weigher->id,
@@ -68,10 +68,12 @@ class TransactionController extends Controller
                     'plate_number'=>$request->plate_number,
                     'weigh_in'=>$request->weigh_in,
                 ]
-            ]);
-
+            );
+    
+            return response()->json(['success' => 'Transaction stored successfully']);
         }
     }
+    
 
     public function show($transaction_id)
     {

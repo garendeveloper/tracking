@@ -21,7 +21,6 @@ class LoginController extends Controller
         ]);
 
         $user = User::where('email', '=', $request->input('email'))->first();
-
         if ($user && Hash::check($request->input('password'), $user->password)) {
             Auth::login($user);
             $request->session()->put('user', $user);

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +26,4 @@ Route::get('/login', [LoginController::class, 'index']);
 Route::post('/dashboard', [LoginController::class, 'login'])->name('login');
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::post('/submitEntry', [TransactionController::class, 'store'])->name('postTransact');
