@@ -21,6 +21,13 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
+
+        DB::table('users')->insert([
+            'name' => 'Caones, Alexander P',
+            'email' => 'occ.caones.alexander@gmail.com',
+            'password' => Hash::make('alex0303')
+        ]);
     }
 
     /**

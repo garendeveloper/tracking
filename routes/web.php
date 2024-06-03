@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +16,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
+    return view('login');
 });
+
+
+
+Route::get('/login', [LoginController::class, 'index']);
+Route::post('/dashboard', [LoginController::class, 'login'])->name('login');
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
