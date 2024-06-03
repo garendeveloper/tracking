@@ -90,8 +90,8 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Earnings (Monthly)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                                TOTAL CUSTOMERS</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dashboard_data['total_customers'] }}</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -108,8 +108,8 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                Earnings (Annual)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                                                TOTAL DRIVERS</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dashboard_data['total_drivers'] }}</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -125,11 +125,11 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">TOTAL WEIGHER
                                             </div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ $dashboard_data['total_weigher'] }}</div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="progress progress-sm mr-2">
@@ -155,8 +155,8 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Pending Requests</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                                TOTAL TRANSACTIONS</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dashboard_data['total_transactions'] }}</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -171,7 +171,24 @@
 
 
                     <!-- Content Row -->
-
+                   <div class="card">
+                        <div class="card-body">
+                        <table id="tbl_transactions" class="display" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Date Transaction</th>
+                                        <th>Customer</th>
+                                        <th>Driver</th>
+                                        <th>Plate Number</th>
+                                        <th>Weigher</th>
+                                        <th>Weigh In</th>
+                                        <th>Gross</th>
+                                        <!-- Add more columns if needed -->
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                   </div>
 
                 </div>
                 <!-- /.container-fluid -->
@@ -202,5 +219,26 @@
 
 </body>
 @include('ft_scripts')
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#tbl_transactions').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '/transactions',
+                columns: [
+                    { data: 'date', name: 'date' },
+                    { data: 'customer', name: 'customer' },
+                    { data: 'driver', name: 'driver' },
+                    { data: 'plate_number', name: 'plate_number' },
+                    { data: 'weigher', name: 'weigher' },
+                    { data: 'weigh_in', name: 'weigh_in' },
+                    { data: 'gross', name: 'gross' },
+                ]
+            });
+        });
+    </script>
 
 </html>

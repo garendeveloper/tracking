@@ -5,22 +5,43 @@ namespace App\Http\Controllers;
 use App\Models\transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Users;
+use App\Models\User;
 use Auth;
 use DB;
+use DataTables;
 
 class TransactionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = DB::select('select * from transactions');
-            return Datatables::of($data)->make(true);
+            $query = DB::select('select * from transactions');
+            $data = [];
+            foreach($query as $q)
+            {
+                $data[] = [
+                    'customer'=> User::find($q->customer)['name'],
+                    'driver' =>  User::find($q->driver)['name'],
+                    'weigher' =>  User::find($q->weigher)['name'],
+                    'gross' => $q->gross,
+                    'weigh_in' => $q->weigh_in,
+                    'plate_number' => $q->plate_number,
+                    'date' => $q->updated_at,
+                    'id' => $q->id,
+                ];
+            }
+            // foreach ($data as $row) {
+            //     $row->edit_button = '<button class="edit-button" data-id="' . $row->id . '">Edit</button>';
+      
+            // }
+        
+            return DataTables::of($data)
+                // ->rawColumns(['edit_button']) 
+                ->make(true);
         }
-
         return view('home');
     }
     public function store(Request $request)
@@ -46,15 +67,15 @@ class TransactionController extends Controller
 
             $save_customer = User::updateOrCreate(
                 ['id' => $request->customer_id],
-                ['name' => $customer, 'role'=>1], 
+                ['name' => $customer, 'role'=>2], 
             );
             $save_driver = User::updateOrCreate(
                 ['id' => $request->driver_id],
-                ['name' => $driver, 'role'=>2], 
+                ['name' => $driver, 'role'=>3], 
             );
             $save_weigher = User::updateOrCreate(
                 ['id' => $request->weigher_id],
-                ['name' => $weigher, 'role'=>3], 
+                ['name' => $weigher, 'role'=>4], 
             );
            
             Transaction::updateOrCreate([
@@ -77,7 +98,9 @@ class TransactionController extends Controller
     {
         $data = DB::select("SELECT users.*, transactions.* 
                             FROM users, transactions
-                            WHERE users.id = transactions.user_id");    
+                            WHERE users.id = transactions.user_id");
+        $array = [];
+
         return response()->json($data);
         
     }
