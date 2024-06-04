@@ -48,6 +48,7 @@ class TransactionController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'customer'=>'required',
+            'item'=>'required',
             'driver'=>'required',
             'weigher'=>'required',
             'gross'=>'required',
@@ -83,6 +84,7 @@ class TransactionController extends Controller
                 [
                     'user_id'=> auth()->id(),
                     'customer'=> $save_customer->id,
+                    'item'=> $request->item,
                     'driver'=> $save_driver->id,
                     'weigher'=> $save_weigher->id,
                     'gross'=>$request->gross,

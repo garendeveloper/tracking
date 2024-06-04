@@ -20,6 +20,7 @@ return new class extends Migration
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
             $table->string('customer'); //1
+            $table->string('item'); //1
             $table->string('driver'); //2
             $table->string('weigher'); //3
             $table->string('gross');

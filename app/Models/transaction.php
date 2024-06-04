@@ -9,6 +9,6 @@ class transaction extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id', 'customer', 'driver', 'weigher', 'gross', 'plate_number', 'weigh_in'
+        'user_id', 'item', 'customer', 'driver', 'weigher', 'gross', 'plate_number', 'weigh_in'
     ];
 }

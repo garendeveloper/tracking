@@ -14,17 +14,20 @@
         <div class="modal-dialog" >
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">ADD TRANSACTION</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" style="height: 500px;">
+            <div class="modal-body" style="height: auto;">
 
-            <div class="form-group">
+            <form class="formData">
                 @csrf
                 <label for="customerName">Customer</label>
                 <input type="text" class="form-control" id="customerName" autocomplete="off" placeholder="Enter Customer Name">
+
+                <label for="item">Item</label>
+                <input type="text" class="form-control" id="item" autocomplete="off" placeholder="What Item">
 
                 <label for="driverName">Driver Name</label>
                 <input type="text" class="form-control" id="driverName" autocomplete="off" placeholder="Enter Driver Name">
@@ -40,13 +43,47 @@
 
                 <label for="plateNumber">Weigh In</label>
                 <input type="number" class="form-control" id="weighIn" autocomplete="off" placeholder="Enter Weigh In">
-            </div>
+            </form>
                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" id="closeModal">Close</button>
-                <button type="button" class="btn btn-primary" id="submitBtn">SUBMIT</button>
+                <button type="button" class="btn btn-primary" id="submitBtn">SAVE</button>
+                <button type="button" class="btn btn-success" id="savePrint">SAVE & PRINT</button>
             </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="modal fade" id="companyModal" tabindex="-1">
+        <div class="modal-dialog" >
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ADD COMPANY NAME</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height: auto;">
+
+            <form class="companyData">
+                @csrf
+                <label for="customerName">Company Name</label>
+                <input type="text" class="form-control" id="company_name" autocomplete="off" placeholder="Company name">
+
+                <label for="item">Address</label>
+                <input type="text" class="form-control" id="address" autocomplete="off" placeholder="Comopany address">
+
+            </form>
+               
+            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="closeModal">CLOSE</button>
+                    <button type="button" class="btn btn-primary" id="saveCompany">SAVE CHANGES</button>
+                </div>
             </div>
         </div>
     </div>
@@ -101,6 +138,13 @@
                                     Logout
                                 </a>
 
+
+                                <a class="dropdown-item" onclick="setCompanyName()">
+                                    <i class="fas fa-cog fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Settings
+                                </a>
+
+
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                     @csrf
                                 </form>
@@ -121,7 +165,7 @@
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
                         <a href="#" id="addEntry" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> ADD</a>
+                                class="fas fa-download fa-sm text-white-50"></i> ADD TRANSACTION</a>
                     </div>
 
                     <!-- Content Row -->
@@ -270,7 +314,54 @@
 <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 <script>
 
+    function setCompanyName() {
+        $('#companyModal').modal('show')
+
+        $.ajax({
+            type: "GET",
+            url: "{{ route('getCompany') }}",
+            success : function(res) {
+               if(res.success) {
+                $('#company_name').val(res.data.company_name);
+                $('#address').val(res.data.address);      
+               } else {
+                $('#saveCompany').off('click').on('click', function() {
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('saveCompany') }}",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            company_id: 0,
+                            company_name: $('#company_name').val(),
+                            address: $('#address').val(),
+                        },
+                        success: function(response) {
+                            console.log('Success:', response);
+                            $('#companyModal').modal('hide')
+                        },
+                        error: function(error) {
+                            console.log('Error:', error);
+                        }
+                    });
+                });
+               }
+            },
+            error : function() {
+                console.log(error);
+            }
+        });
+
+
+       
+
+    }
+
+
     $(document).ready(function() {
+
+
+
+     
         $('#addEntry').off('click').on('click', function() {
             $('#addEntryModal').modal({
                 backdrop : 'static',
@@ -284,6 +375,7 @@
 
 
         $('#submitBtn').off('click').on('click', function() {
+
             $('#addEntryModal').modal('hide');
             $.ajax({
                 type: "POST",
@@ -291,6 +383,7 @@
                 data: {
                     _token: "{{ csrf_token() }}",
                     customer: $('#customerName').val(),
+                    item: $('#item').val(),
                     driver: $('#driverName').val(),
                     weigher: $('#weigher').val(),
                     gross: $('#gross').val(),
@@ -301,31 +394,75 @@
                     customer_id: 0,
                 },
                 success: function(response) {
-                    // console.log("Response from server:", response);
-                    // var newData = {
-                    //     date: '2024-06-04 00:14:19', 
-                    //     customer: response.customer,
-                    //     driver: response.driver,
-                    //     plate_number: response.plate_number,
-                    //     weigher: response.weigher,
-                    //     weigh_in: response.weigh_in,
-                    //     gross: response.gross,
-                    // };
 
-                    // var table = $('#tbl_transactions').DataTable();
-                    // table.row.add(newData).draw();
+                    var customer = $('#customerName').val();
+                    var driver = $('#driverName').val();
+                    var weigher = $('#weigher').val();
+                    var gross = $('#gross').val();
+                    var plateNum = $('#plateNumber').val();
+                    var weightIn = $('#weighIn').val();
+                    var item = $('#item').val();
 
-                    var printWindow = window.open('', '', 'height=400,width=600');
-                    printWindow.document.write('<html><head><title>Print Data</title></head><body>');
-                    printWindow.document.write('<h2>Transaction Data</h2>');
-                    printWindow.document.write('<p>Customer: ' + $('#customerName').val() + '</p>');
-                    printWindow.document.write('<p>Driver: ' + $('#driverName').val() + '</p>');
-                    printWindow.document.write('<p>Weigher: ' + $('#weigher').val() + '</p>');
-                    printWindow.document.write('<p>Gross: ' + $('#gross').val() + '</p>');
-                    printWindow.document.write('<p>Plate Number: ' + $('#plateNumber').val() + '</p>');
-                    printWindow.document.write('<p>Weigh In: ' + $('#weighIn').val() + '</p>');
-                    printWindow.document.close();
-                    printWindow.print();
+
+                    var currentDate = new Date();
+
+                    // Specify options for formatting the date
+                    var options = {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour12: true,
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        second: 'numeric',
+                        timeZone: 'Asia/Manila' // Set the time zone to Manila
+                    };
+
+                    // Format the date and time string
+                    var formattedDateTime = currentDate.toLocaleString('en-US', options);
+                 
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ route('getCompany') }}",
+                        success : function(res) {
+
+                            var printWindow = window.open('', '', 'height=400,width=600');
+                            var escpCommands = '\x1B\x6B\x01'; 
+                            var escpEnd = '\x0C';            
+
+                            printWindow.document.write('<html><head><title>Print Data</title>');
+                            printWindow.document.write('<style>');
+                            printWindow.document.write('body { font-family: "Courier New", Courier, monospace; font-size: 8pt;line-height: 1;text-transform: uppercase; font-weight: 1;}');
+                            printWindow.document.write('h2 { font-family: "Courier New", Courier, monospace; font-size: 14pt; font-weight: bold; }');
+                            printWindow.document.write('p { font-family: "Courier New", Courier, monospace; font-size: 12pt; margin: 0;}');
+                            printWindow.document.write('</style>');
+                            printWindow.document.write('</head><body>');
+                            // printWindow.document.write('<pre>');  
+                            // printWindow.document.write(escpCommands); 
+                            printWindow.document.write('<p>' + res.data.company_name + '</p>')
+                            printWindow.document.write('<p>' + res.data.address + '</p> <br>')
+                           
+                           
+                            printWindow.document.write('<p>Weigh In: ' + weightIn + '</p>');
+                            printWindow.document.write('<p>Plate Number: ' + plateNum + '</p>');
+                            printWindow.document.write('<p>Customer: ' + customer + '</p>');
+                            printWindow.document.write('<p>Item: ' + item + '</p>');
+                            printWindow.document.write('<p>Driver: ' + driver + '</p>');
+                            printWindow.document.write('<p>Weigher: ' + weigher + '</p>');
+                            printWindow.document.write('<p>' + formattedDateTime + '</p>');
+                            printWindow.document.write('<p>Gross/TARE: ' + (gross + ' kg') + '</p>');
+                            // printWindow.document.write(escpEnd);  // Insert form feed at the end
+                            // printWindow.document.write('</pre>');
+                            printWindow.document.write('</body></html>');
+                            printWindow.document.close();
+                            printWindow.print();
+                        
+                        },
+                        error : function() {
+                            console.log(error);
+                        }
+                    });
+                    $('.formData')[0].reset();
                 },
                 error: function(error) {
                     console.log(error);
