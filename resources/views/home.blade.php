@@ -216,7 +216,13 @@
 
                     <!-- Content Row -->
                    <div class="card">
+                        <div class="card-header">
+                           
+                        </div>
                         <div class="card-body">
+                        <div id="export_buttons">
+
+</div>
                         <table id="tbl_transactions" class="display" style="width:100%">
                                 <thead>
                                     <tr>
@@ -227,6 +233,7 @@
                                         <th>Weigher</th>
                                         <th>Weigh In</th>
                                         <th>Gross</th>
+                                        <th>Action</th>
                                         <!-- Add more columns if needed -->
                                     </tr>
                                 </thead>
@@ -268,6 +275,13 @@
 
 <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<!-- <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script> -->
+
+<!-- DataTables Buttons extension -->
+<script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
+<!-- <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.min.js"></script> -->
 <script>
 
     $(document).ready(function() {
@@ -280,9 +294,6 @@
                 $('#addEntryModal').modal('hide');
             })
         })
-
-
-
         $('#submitBtn').off('click').on('click', function() {
             $('#addEntryModal').modal('hide');
             $.ajax({
@@ -299,32 +310,120 @@
                     transaction_id : 0,
                     driver_id : 0,
                     customer_id : 0,
+                    
                 },
                 success : function (response) {
-                    console.log(response);
+                    console.log(response); 
+                    AutoReload();
                 },
                 error : function(error) {
                     console.log(error);
                 }
             });
         });
+        show_datatable();
+        function show_datatable()
+        {
+            
+            $('#tbl_transactions').DataTable({
+                ajax: {
+                    type: 'get',
+                    url: '{{ route("get_transactions") }}',
+                    dataType: 'json',
+                },
+                serverSide: true,
+                processing: true,
+                order: [[0, "desc"]],
+                columnDefs: [
+                    {
+                        className: "text-center", 
+                        targets: [5, 6, 7] 
+                    },
+                    {
+                        "targets": 0,
+                        "render": function(data, type, row, meta) {
+                            var dateStr = data;
+                            var dateObj = new Date(dateStr);
+                            
+                            var options = { year: 'numeric', month: 'long', day: 'numeric' };
+                            var formattedDate = dateObj.toLocaleDateString('en-US', options);
+                            return formattedDate;
+                        }
+                    }
+                ],
+                dom: 'lBftrip',
+                buttons: [
+                    'length',
+                    {
+                        extend: 'copy',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4]
+                        },
+                        className: 'btn btn-primary',
+                    },  
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4] // Set columns 0, 2, and 3 for export
+                        },
+                        className: 'btn btn-danger',
+                    },  
+                    {
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4] 
+                        },
+                        className: 'btn btn-warning',
+                    },  
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4] 
+                        },
+                        className: 'btn btn-success',
+                    },  
+                ],
+                responsive: true,
+        //         initComplete: function () {
+        //     this.api().buttons().container().appendTo('#export_buttons');
+        // }
+                initComplete: function () {
+                    this.api().buttons().container().appendTo('#export_buttons');
+                },
+                columns: [
+                    { data: 'date', name: 'date' },
+                    { data: 'customer', name: 'customer' },
+                    { data: 'driver', name: 'driver' },
+                    { data: 'plate_number', name: 'plate_number' },
+                    { data: 'weigher', name: 'weigher' },
+                    { data: 'weigh_in', name: 'weigh_in' },
+                    { data: 'gross', name: 'gross' },
+                    { data: 'action', name: 'action'},
+                ]
+            });
+        }
 
+        function RefreshTable(tableId, urlData) {
+            $.getJSON(urlData)
+                .done(function(json) {
+                    var table = $(tableId).DataTable(); 
+                    var oSettings = table.settings()[0];
 
+                    table.clear().draw();
 
-        $('#tbl_transactions').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: '/transactions',
-            columns: [
-                { data: 'date', name: 'date' },
-                { data: 'customer', name: 'customer' },
-                { data: 'driver', name: 'driver' },
-                { data: 'plate_number', name: 'plate_number' },
-                { data: 'weigher', name: 'weigher' },
-                { data: 'weigh_in', name: 'weigh_in' },
-                { data: 'gross', name: 'gross' },
-            ]
-        });
+                    if (json && json.data && json.data.length > 0) {
+                        table.rows.add(json.data).draw(); 
+                    }
+                })
+                .fail(function(jqxhr, textStatus, error) {
+                    var err = textStatus + ", " + error;
+                    console.error("Request Failed: " + err);
+                });
+        }
+
+        function AutoReload() {
+            RefreshTable('#tbl_transactions', '{{ route("get_transactions") }}');
+        }
     })
 
 </script>

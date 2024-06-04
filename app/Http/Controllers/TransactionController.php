@@ -31,15 +31,17 @@ class TransactionController extends Controller
                     'plate_number' => $q->plate_number,
                     'date' => $q->updated_at,
                     'id' => $q->id,
+                    // 'action' => '<button class="btn btn-primary btn-sm edit" data-id="'.$q->id.'">Edit</button>',
                 ];
             }
-            // foreach ($data as $row) {
-            //     $row->edit_button = '<button class="edit-button" data-id="' . $row->id . '">Edit</button>';
-      
-            // }
-        
-            return DataTables::of($data)
-                // ->rawColumns(['edit_button']) 
+            return datatables()->of($data)
+                ->addColumn('action', function($row){
+                    $html = '<button data-id = '.$row['id'].' id = "btn_assignment" type="button" class="btn btn-primary btn-sm btn-flat">';
+                    $html .= '<i class = "fas fa fa-edit"></i>';
+                    $html .= '</button>';
+                    return $html;
+                })
+                ->rawColumns(['action'])
                 ->make(true);
         }
         return view('home');

@@ -30,5 +30,5 @@ Route::get('/login', [LoginController::class, 'index']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/transactions', [TransactionController::class, 'index']);
+Route::get('/transactions', [TransactionController::class, 'index'])->name("get_transactions");
 Route::post('/submitEntry', [TransactionController::class, 'store'])->name('postTransact');
