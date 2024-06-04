@@ -20,11 +20,18 @@ Route::get('/', function () {
     return view('login');
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+});
 
-
-Route::get('/login', [LoginController::class, 'index']);
 Route::post('/dashboard', [LoginController::class, 'login'])->name('login');
+Route::get('/login', [LoginController::class, 'index']);
 
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+<<<<<<< HEAD
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/transactions', [TransactionController::class, 'index']);
 Route::post('/submitEntry', [TransactionController::class, 'store'])->name('postTransact');
+=======
+>>>>>>> 066ad62 (auth)
