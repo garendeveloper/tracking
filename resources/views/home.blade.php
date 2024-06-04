@@ -313,7 +313,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
+                        <span>Copyright &copy; <a href="https://www.facebook.com/TinkerProHQ/" target="_blank">TinkerPro 2024</a></span>
                     </div>
                 </div>
             </footer>
@@ -336,15 +336,15 @@
 
 
 <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
-<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script src="{{ asset('assets/datatables/jquery.dataTables.min.js') }}"></script>
 <!-- <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script> -->
 
 <!-- DataTables Buttons extension -->
-<script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
+<script src="{{ asset('assets/datatables/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('assets/datatables/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('assets/datatables/buttons.print.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/datatables/dataTables1.buttons.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/datatables/buttons1.print.min.js') }}"></script>
 <!-- <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.min.js"></script> -->
 <script>
 
