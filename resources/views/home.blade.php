@@ -148,7 +148,7 @@
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dashboard_data['total_customers'] }}</div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                            <i class="fas fa-users fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -166,7 +166,7 @@
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dashboard_data['total_drivers'] }}</div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                            <i class="fas fa-truck fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -189,13 +189,13 @@
                                                     <div class="progress progress-sm mr-2">
                                                         <div class="progress-bar bg-info" role="progressbar"
                                                             style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            aria-valuemax="{{ $dashboard_data['total_weigher'] }}"></div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                            <i class="fas fas fa-balance-scale fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -213,7 +213,7 @@
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dashboard_data['total_transactions'] }}</div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                            <i class="fas fa-money-check-alt fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -234,7 +234,7 @@
 
 </div>
                         <table id="tbl_transactions" class="display" style="width:100%">
-                                <thead>
+                                <thead >
                                     <tr>
                                         <th>Date Transaction</th>
                                         <th>Customer</th>
