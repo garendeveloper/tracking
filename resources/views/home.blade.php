@@ -287,6 +287,8 @@
 <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
 <!-- <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.min.js"></script> -->
 <script>
 
@@ -359,34 +361,12 @@
                 ],
                 dom: 'lBftrip',
                 buttons: [
-                    'length',
-                    {
-                        extend: 'copy',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4]
-                        },
-                        className: 'btn btn-primary',
-                    },  
                     {
                         extend: 'print',
                         exportOptions: {
                             columns: [0, 1, 2, 3, 4] // Set columns 0, 2, and 3 for export
                         },
                         className: 'btn btn-danger',
-                    },  
-                    {
-                        extend: 'pdf',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4] 
-                        },
-                        className: 'btn btn-warning',
-                    },  
-                    {
-                        extend: 'excel',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4] 
-                        },
-                        className: 'btn btn-success',
                     },  
                 ],
                 responsive: true,
