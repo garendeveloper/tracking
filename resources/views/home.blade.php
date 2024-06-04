@@ -364,7 +364,7 @@
                     {
                         extend: 'print',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4] // Set columns 0, 2, and 3 for export
+                            columns: [0, 1, 2, 3, 4, 5 ,6] // Set columns 0, 2, and 3 for export
                         },
                         className: 'btn btn-danger',
                     },  

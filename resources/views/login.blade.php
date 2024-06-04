@@ -24,6 +24,7 @@
             width: 50vh;
             left: 25%;
             right: 75%;
+            background-color: gray;
         }
         .card-body {
             text-align: center;
@@ -52,13 +53,13 @@
         <div class="row justify-content-center">
             <div class="col-xl-10 col-lg-12 col-md-9">
                 <div class="title-header">
-                    <h1  style="font-family: 'Century Gothic', sans-serif;font-size: 5vh">Trucking Management System</h1>
+                    <h1  style="font-family: 'Century Gothic', sans-serif;font-size: 5vh; color: white; text-shadow: 5px 5px black;"><b>Trucking Management System Basic</b></h1>
                 </div>
                 <div class="card o-hidden border-0 shadow-lg my-5 loginCard">
-                    <div class="card-body p-0">
+                    <div class="card-body p-0" style = "background-color: gray">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1  style="font-family: 'Century Gothic', sans-serif;" class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                        <h1  style="font-family: 'Century Gothic', sans-serif; color: white;" class="h4  mb-4"><b>WELCOME BACK!</b> </h1>
                                     </div>
                                     <form method="POST" action="{{ route('login') }}">
                                         @csrf
