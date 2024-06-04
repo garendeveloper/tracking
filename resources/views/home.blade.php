@@ -4,6 +4,12 @@
 <head>
 
    @extends('header')
+   <style>
+    .styleFonts{
+    font-family: 'Century Gothic', sans-serif;
+}
+
+   </style>
 
 </head>
 
@@ -14,7 +20,7 @@
         <div class="modal-dialog" >
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title styleFonts" style="font-weight: bold" id="exampleModalLabel">Add Transactions</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -23,25 +29,25 @@
 
             <div class="form-group">
                 @csrf
-                <label for="customerName">Customer</label>
-                <input type="text" class="form-control" id="customerName" placeholder="Enter Customer Name">
+                <label for="customerName" class="styleFonts">Customer</label>
+                <input type="text" class="form-control styleFonts" id="customerName" placeholder="Enter Customer Name" required>
 
-                <label for="driverName">Driver Name</label>
-                <input type="text" class="form-control" id="driverName" placeholder="Enter Driver Name">
+                <label for="driverName" class="styleFonts">Driver Name</label>
+                <input type="text" class="form-control styleFonts" id="driverName" placeholder="Enter Driver Name"  required>
 
-                <label for="weigher">Weigher</label>
-                <input type="text" class="form-control" id="weigher" placeholder="Enter Driver Name">
+                <label for="weigher" class="styleFonts">Weigher</label>
+                <input type="text" class="form-control styleFonts" id="weigher" placeholder="Enter Driver Name" required>
 
-                <label for="gross">Gross</label>
-                <input type="number" class="form-control" id="gross" placeholder="Total Gross">
+                <label for="gross" class="styleFonts">Gross</label>
+                <input type="number" class="form-control styleFonts" id="gross" placeholder="Total Gross"  required>
 
-                <label for="plateNumber">Place Number</label>
-                <input type="text" class="form-control" id="plateNumber" placeholder="Enter Plate Number">
+                <label for="plateNumber"  class="styleFonts">Place Number</label>
+                <input type="text" class="form-control styleFonts" id="plateNumber" placeholder="Enter Plate Number"  required>
 
-                <label for="plateNumber">Weigh In</label>
-                <input type="number" class="form-control" id="weighIn" placeholder="Enter Weigh In">
+                <label for="plateNumber"  class="styleFonts">Weigh In</label>
+                <input type="number" class="form-control styleFonts" id="weighIn" placeholder="Enter Weigh In"  required>
             </div>
-               
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" id="closeModal">Close</button>
@@ -52,7 +58,7 @@
     </div>
 
     <div id="wrapper">
-        @include('sidebar')
+        {{-- @include('sidebar') --}}
         <div id="content-wrapper" class="d-flex flex-column">
 
             <div id="content">
@@ -119,7 +125,7 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Transactions</h1>
                         <a href="#" id="addEntry" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                     </div>
@@ -323,6 +329,8 @@
                 { data: 'weigher', name: 'weigher' },
                 { data: 'weigh_in', name: 'weigh_in' },
                 { data: 'gross', name: 'gross' },
+
+
             ]
         });
     })
