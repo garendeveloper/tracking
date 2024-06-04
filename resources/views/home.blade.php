@@ -24,22 +24,22 @@
             <div class="form-group">
                 @csrf
                 <label for="customerName">Customer</label>
-                <input type="text" class="form-control" id="customerName" placeholder="Enter Customer Name">
+                <input type="text" class="form-control" id="customerName" autocomplete="off" placeholder="Enter Customer Name">
 
                 <label for="driverName">Driver Name</label>
-                <input type="text" class="form-control" id="driverName" placeholder="Enter Driver Name">
+                <input type="text" class="form-control" id="driverName" autocomplete="off" placeholder="Enter Driver Name">
 
                 <label for="weigher">Weigher</label>
-                <input type="text" class="form-control" id="weigher" placeholder="Enter Driver Name">
+                <input type="text" class="form-control" id="weigher" autocomplete="off" placeholder="Enter Driver Name">
 
                 <label for="gross">Gross</label>
-                <input type="number" class="form-control" id="gross" placeholder="Total Gross">
+                <input type="number" class="form-control" id="gross" autocomplete="off" placeholder="Total Gross">
 
                 <label for="plateNumber">Place Number</label>
-                <input type="text" class="form-control" id="plateNumber" placeholder="Enter Plate Number">
+                <input type="text" class="form-control" id="plateNumber" autocomplete="off" placeholder="Enter Plate Number">
 
                 <label for="plateNumber">Weigh In</label>
-                <input type="number" class="form-control" id="weighIn" placeholder="Enter Weigh In">
+                <input type="number" class="form-control" id="weighIn" autocomplete="off" placeholder="Enter Weigh In">
             </div>
                
             </div>
@@ -117,7 +117,7 @@
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
                         <a href="#" id="addEntry" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+                                class="fas fa-download fa-sm text-white-50"></i> ADD</a>
                     </div>
 
                     <!-- Content Row -->
@@ -284,29 +284,56 @@
             $.ajax({
                 type: "POST",
                 url: "{{ route('postTransact') }}",
-                data : {
+                data: {
                     _token: "{{ csrf_token() }}",
-                    customer : $('#customerName').val(),
-                    driver : $('#driverName').val(),
-                    weigher : $('#weigher').val(),
-                    gross : $('#gross').val(),
-                    plate_number : $('#plateNumber').val(),
-                    weigh_in : $('#weighIn').val(),
-                    transaction_id : 0,
-                    driver_id : 0,
-                    customer_id : 0,
+                    customer: $('#customerName').val(),
+                    driver: $('#driverName').val(),
+                    weigher: $('#weigher').val(),
+                    gross: $('#gross').val(),
+                    plate_number: $('#plateNumber').val(),
+                    weigh_in: $('#weighIn').val(),
+                    transaction_id: 0,
+                    driver_id: 0,
+                    customer_id: 0,
                 },
-                success : function (response) {
-                    console.log(response);
+                success: function(response) {
+                    // console.log("Response from server:", response);
+                    // var newData = {
+                    //     date: '2024-06-04 00:14:19', 
+                    //     customer: response.customer,
+                    //     driver: response.driver,
+                    //     plate_number: response.plate_number,
+                    //     weigher: response.weigher,
+                    //     weigh_in: response.weigh_in,
+                    //     gross: response.gross,
+                    // };
+
+                    // var table = $('#tbl_transactions').DataTable();
+                    // table.row.add(newData).draw();
+
+                    var printWindow = window.open('', '', 'height=400,width=600');
+                    printWindow.document.write('<html><head><title>Print Data</title></head><body>');
+                    printWindow.document.write('<h2>Transaction Data</h2>');
+                    printWindow.document.write('<p>Customer: ' + $('#customerName').val() + '</p>');
+                    printWindow.document.write('<p>Driver: ' + $('#driverName').val() + '</p>');
+                    printWindow.document.write('<p>Weigher: ' + $('#weigher').val() + '</p>');
+                    printWindow.document.write('<p>Gross: ' + $('#gross').val() + '</p>');
+                    printWindow.document.write('<p>Plate Number: ' + $('#plateNumber').val() + '</p>');
+                    printWindow.document.write('<p>Weigh In: ' + $('#weighIn').val() + '</p>');
+                    printWindow.document.close();
+                    printWindow.print();
                 },
-                error : function(error) {
+                error: function(error) {
                     console.log(error);
                 }
             });
         });
 
+    })
 
 
+
+    $(document).ready(function() {
         $('#tbl_transactions').DataTable({
             processing: true,
             serverSide: true,

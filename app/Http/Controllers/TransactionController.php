@@ -91,7 +91,9 @@ class TransactionController extends Controller
                 ]
             );
     
-            return response()->json(['success' => 'Transaction stored successfully']);
+            return response()->json([
+                'success' => 'Transaction stored successfully',
+            ]);
         }
     }
     
