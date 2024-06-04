@@ -31,12 +31,11 @@ class TransactionController extends Controller
                     'plate_number' => $q->plate_number,
                     'date' => $q->updated_at,
                     'id' => $q->id,
-                    // 'action' => '<button class="btn btn-primary btn-sm edit" data-id="'.$q->id.'">Edit</button>',
                 ];
             }
             return datatables()->of($data)
                 ->addColumn('action', function($row){
-                    $html = '<button data-id = '.$row['id'].' id = "btn_assignment" type="button" class="btn btn-primary btn-sm btn-flat">';
+                    $html = '<button data-id = '.$row['id'].' id = "btn_edit" type="button" class="btn btn-primary btn-sm btn-flat">';
                     $html .= '<i class = "fas fa fa-edit"></i>';
                     $html .= '</button>';
                     return $html;
@@ -98,12 +97,27 @@ class TransactionController extends Controller
     }
     
 
-    public function show($transaction_id)
+    public function show(Request $request)
     {
-        $data = DB::select("SELECT users.*, transactions.* 
-                            FROM users, transactions
-                            WHERE users.id = transactions.user_id");
-        $array = [];
+        $transaction_id = $request->id;
+        $query = DB::select('select * from transactions where id = '.$transaction_id.'');
+        $data = [];
+        foreach($query as $q)
+        {
+            $data[] = [
+                'customer_id'=> $q->customer,
+                'driver_id' =>  $q->driver,
+                'weigher_id' =>  $q->weigher,
+                'customer'=> User::find($q->customer)['name'],
+                'driver' =>  User::find($q->driver)['name'],
+                'weigher' =>  User::find($q->weigher)['name'],
+                'gross' => $q->gross,
+                'weigh_in' => $q->weigh_in,
+                'plate_number' => $q->plate_number,
+                'date' => $q->updated_at,
+                'id' => $q->id,
+            ];
+        }
 
         return response()->json($data);
         

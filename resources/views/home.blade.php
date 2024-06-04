@@ -29,6 +29,10 @@
 
             <div class="form-group">
                 @csrf
+                <input type="hidden" id = "customer_id" value = "0">
+                <input type="hidden" id = "driver_id" value = "0">
+                <input type="hidden" id = "weigher_id" value = "0">
+                <input type="hidden" id = "transaction_id" value = "0">
                 <label for="customerName" class="styleFonts">Customer</label>
                 <input type="text" class="form-control styleFonts" id="customerName" placeholder="Enter Customer Name" required>
 
@@ -315,9 +319,10 @@
                     gross : $('#gross').val(),
                     plate_number : $('#plateNumber').val(),
                     weigh_in : $('#weighIn').val(),
-                    transaction_id : 0,
-                    driver_id : 0,
-                    customer_id : 0,
+                    transaction_id : $("#transaction_id").val(),
+                    driver_id : $("#driver_id").val(),
+                    customer_id : $("#customer_id").val(),
+                    customer_id : $("#weigher_id").val(),
                     
                 },
                 success : function (response) {
@@ -410,6 +415,37 @@
         function AutoReload() {
             RefreshTable('#tbl_transactions', '{{ route("get_transactions") }}');
         }
+
+        $("#tbl_transactions tbody").on("click", '#btn_edit', function(e){
+            e.preventDefault();
+            var id = $(this).data('id');
+            $.ajax({
+                type: 'get',
+                url: '{{ route("transaction.show") }}',
+                data: {
+                    id: id,
+                },
+                success: function(response)
+                {
+                    $("#addEntryModal").find(".modal-title").text("Edit Transaction")
+                    $("#transaction_id").val(id);
+                    $("#customer_id").val(response[0].customer_id);
+                    $("#driver_id").val(response[0].driver_id);
+                    $("#weigher_id").val(response[0].weigher_id);
+                    $("#customerName").val(response[0].customer);
+                    $("#driverName").val(response[0].driver);
+                    $("#weigher").val(response[0].weigher);
+                    $("#gross").val(response[0].gross);
+                    $("#plateNumber").val(response[0].plate_number);
+                    $("#weighIn").val(response[0].weigh_in);
+                    $("#addEntryModal").modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                    AutoReload();
+                },
+            })
+        })
     })
 
 </script>

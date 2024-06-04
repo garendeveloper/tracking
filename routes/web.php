@@ -24,6 +24,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/transactions', [TransactionController::class, 'index'])->name("get_transactions");
     Route::post('/submitEntry', [TransactionController::class, 'store'])->name('postTransact');
+    Route::get('/transaction/get', [TransactionController::class, 'show'])->name('transaction.show');
 });
 
 Route::post('/dashboard', [LoginController::class, 'login'])->name('login');
