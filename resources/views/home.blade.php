@@ -4,6 +4,12 @@
 <head>
 
    @extends('header')
+   <style>
+    .styleFonts{
+        font-family: 'Century Gothic', sans-serif;
+    }
+
+   </style>
 
 </head>
 
@@ -23,33 +29,43 @@
 
             <form class="formData">
                 @csrf
-                <label for="customerName">Customer</label>
-                <input type="text" class="form-control" id="customerName" autocomplete="off" placeholder="Enter Customer Name">
+                <input type="hidden" id = "customer_id" value = "0">
+                <input type="hidden" id = "driver_id" value = "0">
+                <input type="hidden" id = "weigher_id" value = "0">
+                <input type="hidden" id = "transaction_id" value = "0">
+               
+                <label for="plateNumber"  class="styleFonts">Weigh In</label>
+                <input type="number" class="form-control styleFonts" id="weighIn" autocomplete="off" placeholder="Enter Weigh In"  required>
+
+                <label for="plateNumber"  class="styleFonts">Place Number</label>
+                <input type="text" class="form-control styleFonts" id="plateNumber" autocomplete="off" placeholder="Enter Plate Number"  required>
+
+                <label for="customerName" class="styleFonts">Customer</label>
+                <input type="text" class="form-control styleFonts" id="customerName" autocomplete="off" placeholder="Enter Customer Name" required>
 
                 <label for="item">Item</label>
                 <input type="text" class="form-control" id="item" autocomplete="off" placeholder="What Item">
 
-                <label for="driverName">Driver Name</label>
-                <input type="text" class="form-control" id="driverName" autocomplete="off" placeholder="Enter Driver Name">
+                <label for="driverName" class="styleFonts">Driver Name</label>
+                <input type="text" class="form-control styleFonts" id="driverName" autocomplete="off" placeholder="Enter Driver Name"  required>
 
-                <label for="weigher">Weigher</label>
-                <input type="text" class="form-control" id="weigher" autocomplete="off" placeholder="Enter Driver Name">
+                <label for="weigher" class="styleFonts">Weigher</label>
+                <input type="text" class="form-control styleFonts" id="weigher" autocomplete="off" placeholder="Enter Weigher Name" required>
 
-                <label for="gross">Gross</label>
-                <input type="number" class="form-control" id="gross" autocomplete="off" placeholder="Total Gross">
+                <label for="weigher" class="styleFonts">Date</label>
+                <input type="date" class="form-control styleFonts" id="date" autocomplete="off" required>
+                
+                <label for="weigher" class="styleFonts">Time</label>
+                <input type="time" class="form-control styleFonts" id="time" autocomplete="off" required>
 
-                <label for="plateNumber">Place Number</label>
-                <input type="text" class="form-control" id="plateNumber" autocomplete="off" placeholder="Enter Plate Number">
-
-                <label for="plateNumber">Weigh In</label>
-                <input type="number" class="form-control" id="weighIn" autocomplete="off" placeholder="Enter Weigh In">
+                <label for="gross" class="styleFonts">Gross</label>
+                <input type="number" class="form-control styleFonts" id="gross" autocomplete="off" placeholder="Total Gross"  required>     
             </form>
-               
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" id="closeModal">Close</button>
-                <button type="button" class="btn btn-primary" id="submitBtn">SAVE</button>
-                <button type="button" class="btn btn-success" id="savePrint">SAVE & PRINT</button>
+                <button type="button" class="btn btn-success" id="submitBtn">SAVE & PRINT</button>
             </div>
             </div>
         </div>
@@ -71,6 +87,7 @@
 
             <form class="companyData">
                 @csrf
+                <input type ="hidden" id = "company_id" value = "0">
                 <label for="customerName">Company Name</label>
                 <input type="text" class="form-control" id="company_name" autocomplete="off" placeholder="Company name">
 
@@ -89,7 +106,7 @@
     </div>
 
     <div id="wrapper">
-        @include('sidebar')
+        {{-- @include('sidebar') --}}
         <div id="content-wrapper" class="d-flex flex-column">
 
             <div id="content">
@@ -163,7 +180,7 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Transactions</h1>
                         <a href="#" id="addEntry" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-download fa-sm text-white-50"></i> ADD TRANSACTION</a>
                     </div>
@@ -182,7 +199,7 @@
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dashboard_data['total_customers'] }}</div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                            <i class="fas fa-users fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -200,7 +217,7 @@
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dashboard_data['total_drivers'] }}</div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                            <i class="fas fa-truck fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -223,13 +240,13 @@
                                                     <div class="progress progress-sm mr-2">
                                                         <div class="progress-bar bg-info" role="progressbar"
                                                             style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            aria-valuemax="{{ $dashboard_data['total_weigher'] }}"></div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                            <i class="fas fas fa-balance-scale fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -247,7 +264,7 @@
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dashboard_data['total_transactions'] }}</div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                            <i class="fas fa-money-check-alt fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -260,17 +277,25 @@
 
                     <!-- Content Row -->
                    <div class="card">
+                        <div class="card-header">
+                           
+                        </div>
                         <div class="card-body">
+                        <div id="export_buttons">
+
+</div>
                         <table id="tbl_transactions" class="display" style="width:100%">
-                                <thead>
+                                <thead >
                                     <tr>
                                         <th>Date Transaction</th>
                                         <th>Customer</th>
+                                        <th>Item</th>
                                         <th>Driver</th>
                                         <th>Plate Number</th>
                                         <th>Weigher</th>
                                         <th>Weigh In</th>
                                         <th>Gross</th>
+                                        <th>Action</th>
                                         <!-- Add more columns if needed -->
                                     </tr>
                                 </thead>
@@ -312,6 +337,15 @@
 
 <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<!-- <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script> -->
+
+<!-- DataTables Buttons extension -->
+<script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
+<!-- <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.min.js"></script> -->
 <script>
 
     function setCompanyName() {
@@ -323,15 +357,17 @@
             success : function(res) {
                if(res.success) {
                 $('#company_name').val(res.data.company_name);
-                $('#address').val(res.data.address);      
-               } else {
-                $('#saveCompany').off('click').on('click', function() {
+                $('#address').val(res.data.address);   
+                $('#company_id').val(res.data.id);      
+               } 
+
+               $('#saveCompany').off('click').on('click', function() {
                     $.ajax({
                         type: "POST",
                         url: "{{ route('saveCompany') }}",
                         data: {
                             _token: "{{ csrf_token() }}",
-                            company_id: 0,
+                            company_id: $("#company_id").val(),
                             company_name: $('#company_name').val(),
                             address: $('#address').val(),
                         },
@@ -344,7 +380,6 @@
                         }
                     });
                 });
-               }
             },
             error : function() {
                 console.log(error);
@@ -371,11 +406,21 @@
                 $('#addEntryModal').modal('hide');
             })
         })
-
-
-
         $('#submitBtn').off('click').on('click', function() {
+            var timeFormat = $("#time").val();
+            var dateFormat = $("#date").val();
 
+            var formattedTime = new Date("1970-01-01T" + timeFormat + "Z").toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+
+            var date = new Date(dateFormat); 
+            var month = (date.getMonth() + 1).toString().padStart(2, '0'); // Get month (adding 1 since January is 0) 
+            var day = date.getDate().toString().padStart(2, '0'); // Get day 
+            var year = date.getFullYear().toString().slice(-2); // Get last two digits of year 
+            var formattedDate = month + '/' + day + '/' + year; console.log(formattedDate); // Output will be like "05/27/24"
+
+
+            var dateAndTime =  formattedTime + ' ' + formattedDate
+           
             $('#addEntryModal').modal('hide');
             $.ajax({
                 type: "POST",
@@ -389,12 +434,16 @@
                     gross: $('#gross').val(),
                     plate_number: $('#plateNumber').val(),
                     weigh_in: $('#weighIn').val(),
-                    transaction_id: 0,
-                    driver_id: 0,
-                    customer_id: 0,
+                    transaction_id: $("#transaction_id").val(),
+                    driver_id: $("#driver_id").val(),
+                    customer_id : $("#customer_id").val(),
+                    customer_id: $("#weigher_id").val(),
+                    date: $("#date").val(),
+                    time: $("#time").val(),
+                    
                 },
                 success: function(response) {
-
+                    // AutoReload();
                     var customer = $('#customerName').val();
                     var driver = $('#driverName').val();
                     var weigher = $('#weigher').val();
@@ -403,10 +452,7 @@
                     var weightIn = $('#weighIn').val();
                     var item = $('#item').val();
 
-
                     var currentDate = new Date();
-
-                    // Specify options for formatting the date
                     var options = {
                         year: 'numeric',
                         month: 'long',
@@ -415,26 +461,24 @@
                         hour: 'numeric',
                         minute: 'numeric',
                         second: 'numeric',
-                        timeZone: 'Asia/Manila' // Set the time zone to Manila
+                        timeZone: 'Asia/Manila' 
                     };
 
-                    // Format the date and time string
                     var formattedDateTime = currentDate.toLocaleString('en-US', options);
-                 
                     $.ajax({
                         type: "GET",
                         url: "{{ route('getCompany') }}",
                         success : function(res) {
-
+                           
                             var printWindow = window.open('', '', 'height=400,width=600');
                             var escpCommands = '\x1B\x6B\x01'; 
                             var escpEnd = '\x0C';            
 
                             printWindow.document.write('<html><head><title>Print Data</title>');
                             printWindow.document.write('<style>');
-                            printWindow.document.write('body { font-family: "Courier New", Courier, monospace; font-size: 8pt;line-height: 1;text-transform: uppercase; font-weight: 1;}');
-                            printWindow.document.write('h2 { font-family: "Courier New", Courier, monospace; font-size: 14pt; font-weight: bold; }');
-                            printWindow.document.write('p { font-family: "Courier New", Courier, monospace; font-size: 12pt; margin: 0;}');
+                            printWindow.document.write('body { font-family: "Epson2"; font-size: 8pt;line-height: 1; font-weight: 1;}');
+                            printWindow.document.write('h2 { font-family: "Epson2"; font-size: 14pt; font-weight: bold; }');
+                            printWindow.document.write('p { font-family: "Epson2"; font-size: 12pt; margin: 0;}');
                             printWindow.document.write('</style>');
                             printWindow.document.write('</head><body>');
                             // printWindow.document.write('<pre>');  
@@ -443,14 +487,14 @@
                             printWindow.document.write('<p>' + res.data.address + '</p> <br>')
                            
                            
-                            printWindow.document.write('<p>Weigh In: ' + weightIn + '</p>');
-                            printWindow.document.write('<p>Plate Number: ' + plateNum + '</p>');
-                            printWindow.document.write('<p>Customer: ' + customer + '</p>');
-                            printWindow.document.write('<p>Item: ' + item + '</p>');
-                            printWindow.document.write('<p>Driver: ' + driver + '</p>');
-                            printWindow.document.write('<p>Weigher: ' + weigher + '</p>');
-                            printWindow.document.write('<p>' + formattedDateTime + '</p>');
-                            printWindow.document.write('<p>Gross/TARE: ' + (gross + ' kg') + '</p>');
+                            printWindow.document.write('<p>Weigh-In: ' + weightIn + '</p>');
+                            printWindow.document.write('<p style="text-transform: uppercase">Plate<span style="font-size: 20px">#</span>: ' + plateNum + '</p>');
+                            printWindow.document.write('<p style="text-transform: uppercase">Customer: ' + customer + '</p>');
+                            printWindow.document.write('<p style="text-transform: uppercase">Item: ' + item + '</p>');
+                            printWindow.document.write('<p style="text-transform: uppercase">Driver: ' + driver + '</p>');
+                            printWindow.document.write('<p style="text-transform: uppercase">Weigher: ' + weigher + '</p>');
+                            printWindow.document.write('<p style="text-transform: lowercase">' + dateAndTime + '</p>');
+                            printWindow.document.write('<p><span style="text-transform: uppercase">Gross/TARE: </span>' + (' ' + gross + ' kg') + '</p>');
                             // printWindow.document.write(escpEnd);  // Insert form feed at the end
                             // printWindow.document.write('</pre>');
                             printWindow.document.write('</body></html>');
@@ -469,26 +513,122 @@
                 }
             });
         });
+        show_datatable();
+        function show_datatable()
+        {
+            
+            $('#tbl_transactions').DataTable({
+                ajax: {
+                    type: 'get',
+                    url: '{{ route("get_transactions") }}',
+                    dataType: 'json',
+                },
+                serverSide: true,
+                processing: true,
+                order: [[0, "desc"]],
+                columnDefs: [
+                    {
+                        className: "text-center", 
+                        targets: [6, 7, 8] 
+                    },
+                    {
+                        "targets": 0,
+                        "render": function(data, type, row, meta) {
+                            var dateStr = data;
+                            var dateObj = new Date(dateStr);
+                            
+                            var options = { year: 'numeric', month: 'long', day: 'numeric' };
+                            var formattedDate = dateObj.toLocaleDateString('en-US', options);
+                            return formattedDate;
+                        }
+                    }
+                ],
+                dom: 'lBftrip',
+                buttons: [
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5 ,6, 7] // Set columns 0, 2, and 3 for export
+                        },
+                        className: 'btn btn-danger',
+                    },  
+                ],
+                responsive: true,
+        //         initComplete: function () {
+        //     this.api().buttons().container().appendTo('#export_buttons');
+        // }
+                initComplete: function () {
+                    this.api().buttons().container().appendTo('#export_buttons');
+                },
+                columns: [
+                    { data: 'date_transact', name: 'date_transact' },
+                    { data: 'customer', name: 'customer' },
+                    { data: 'item', name: 'item' },
+                    { data: 'driver', name: 'driver' },
+                    { data: 'plate_number', name: 'plate_number' },
+                    { data: 'weigher', name: 'weigher' },
+                    { data: 'weigh_in', name: 'weigh_in' },
+                    { data: 'gross', name: 'gross' },
+                    { data: 'action', name: 'action'},
+                ]
+            });
+        }
 
-    })
+        function RefreshTable(tableId, urlData) {
+            $.getJSON(urlData)
+                .done(function(json) {
+                    var table = $(tableId).DataTable(); 
+                    var oSettings = table.settings()[0];
 
+                    table.clear().draw();
 
+                    if (json && json.data && json.data.length > 0) {
+                        table.rows.add(json.data).draw(); 
+                    }
+                })
+                .fail(function(jqxhr, textStatus, error) {
+                    var err = textStatus + ", " + error;
+                    console.error("Request Failed: " + err);
+                });
+        }
 
-    $(document).ready(function() {
-        $('#tbl_transactions').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: '/transactions',
-            columns: [
-                { data: 'date', name: 'date' },
-                { data: 'customer', name: 'customer' },
-                { data: 'driver', name: 'driver' },
-                { data: 'plate_number', name: 'plate_number' },
-                { data: 'weigher', name: 'weigher' },
-                { data: 'weigh_in', name: 'weigh_in' },
-                { data: 'gross', name: 'gross' },
-            ]
-        });
+        function AutoReload() {
+            RefreshTable('#tbl_transactions', '{{ route("get_transactions") }}');
+        }
+
+        $("#tbl_transactions tbody").on("click", '#btn_edit', function(e){
+            e.preventDefault();
+            var id = $(this).data('id');
+            $.ajax({
+                type: 'get',
+                url: '{{ route("transaction.show") }}',
+                data: {
+                    id: id,
+                },
+                success: function(response)
+                {
+                    $("#addEntryModal").find(".modal-title").text("Edit Transaction")
+                    $("#transaction_id").val(id);
+                    $("#customer_id").val(response[0].customer_id);
+                    $("#driver_id").val(response[0].driver_id);
+                    $("#weigher_id").val(response[0].weigher_id);
+                    $("#customerName").val(response[0].customer);
+                    $("#driverName").val(response[0].driver);
+                    $("#weigher").val(response[0].weigher);
+                    $("#gross").val(response[0].gross);
+                    $("#plateNumber").val(response[0].plate_number);
+                    $("#weighIn").val(response[0].weigh_in);
+                    $("#item").val(response[0].item);
+                    $("#date").val(response[0].date_transact);
+                    $("#time").val(response[0].time);
+                    $("#addEntryModal").modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                    AutoReload();
+                },
+            })
+        })
     })
 
 </script>

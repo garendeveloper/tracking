@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 class HomeController extends Controller
 {
-    //
-    public function index() {
+    public function index() 
+    {
         $dashboard_data = [
             'total_customers'=> DB::table('users')->where('role', '=', 2)->count(),
             'total_drivers'=> DB::table('users')->where('role', '=', 3)->count(),

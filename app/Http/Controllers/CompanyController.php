@@ -63,8 +63,6 @@ class CompanyController extends Controller
     public function edit(company $company)
     {
         //
-
-        
     }
 
     /**

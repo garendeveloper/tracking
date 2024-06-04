@@ -29,17 +29,21 @@ class TransactionController extends Controller
                     'gross' => $q->gross,
                     'weigh_in' => $q->weigh_in,
                     'plate_number' => $q->plate_number,
+                    'item'=>$q->item,
+                    'time'=>$q->time,
+                    'date_transact'=>$q->date,
                     'date' => $q->updated_at,
                     'id' => $q->id,
                 ];
             }
-            // foreach ($data as $row) {
-            //     $row->edit_button = '<button class="edit-button" data-id="' . $row->id . '">Edit</button>';
-      
-            // }
-        
-            return DataTables::of($data)
-                // ->rawColumns(['edit_button']) 
+            return datatables()->of($data)
+                ->addColumn('action', function($row){
+                    $html = '<button data-id = '.$row['id'].' id = "btn_edit" type="button" class="btn btn-primary btn-sm btn-flat">';
+                    $html .= '<i class = "fas fa fa-edit"></i>';
+                    $html .= '</button>';
+                    return $html;
+                })
+                ->rawColumns(['action'])
                 ->make(true);
         }
         return view('home');
@@ -53,7 +57,8 @@ class TransactionController extends Controller
             'weigher'=>'required',
             'gross'=>'required',
             'plate_number'=>'required',
-            'weigh_in'=>'required',
+            'date'=>'required',
+            'time'=>'required',
         ]);
     
         if($validator->fails())
@@ -90,6 +95,8 @@ class TransactionController extends Controller
                     'gross'=>$request->gross,
                     'plate_number'=>$request->plate_number,
                     'weigh_in'=>$request->weigh_in,
+                    'date'=>$request->date,
+                    'time'=>$request->time,
                 ]
             );
     
@@ -100,12 +107,30 @@ class TransactionController extends Controller
     }
     
 
-    public function show($transaction_id)
+    public function show(Request $request)
     {
-        $data = DB::select("SELECT users.*, transactions.* 
-                            FROM users, transactions
-                            WHERE users.id = transactions.user_id");
-        $array = [];
+        $transaction_id = $request->id;
+        $query = DB::select('select * from transactions where id = '.$transaction_id.'');
+        $data = [];
+        foreach($query as $q)
+        {
+            $data[] = [
+                'customer_id'=> $q->customer,
+                'driver_id' =>  $q->driver,
+                'weigher_id' =>  $q->weigher,
+                'customer'=> User::find($q->customer)['name'],
+                'driver' =>  User::find($q->driver)['name'],
+                'weigher' =>  User::find($q->weigher)['name'],
+                'gross' => $q->gross,
+                'weigh_in' => $q->weigh_in,
+                'plate_number' => $q->plate_number,
+                'date' => $q->updated_at,
+                'item'=>$q->item,
+                'time'=>$q->time,
+                'date_transact'=>$q->date,
+                'id' => $q->id,
+            ];
+        }
 
         return response()->json($data);
         

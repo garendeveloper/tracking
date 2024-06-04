@@ -23,9 +23,11 @@ return new class extends Migration
             $table->string('item'); //1
             $table->string('driver'); //2
             $table->string('weigher'); //3
+            $table->string('date'); //3
+            $table->string('time'); //3
             $table->string('gross');
             $table->string('plate_number');
-            $table->string('weigh_in');
+            $table->string('weigh_in')->nullable();
             $table->timestamps();
         });
     }
